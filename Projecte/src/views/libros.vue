@@ -28,6 +28,7 @@ onBeforeMount(async () => {
         <libros v-for="actual in dadesLlibres"
         :key="actual.id"
         :llibres="actual"
+        @favorit="favorit"
         />
     </div>
 
