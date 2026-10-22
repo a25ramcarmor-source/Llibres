@@ -4,6 +4,7 @@ import libros from '@/components/llibreComp.vue'
 import { getLlibres } from '../../comunicacio/llibres'
 const dadesLlibres = ref([])
 import { onBeforeMount } from 'vue'
+import filtre from '@/components/compFiltre.vue'
 const carregant = ref(true);
 
 //Aixo es un moment determinat
@@ -31,6 +32,8 @@ onBeforeMount(async () => {
 
 <template>
   <h1 v-if="!carregant">Llibres</h1>
+
+  <filtre>Filtrar</filtre>
 
   <div id="load" v-if="carregant">
     <img v-if="carregant" id="load"
