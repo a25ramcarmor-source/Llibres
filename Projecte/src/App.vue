@@ -9,6 +9,7 @@ import { onBeforeMount } from 'vue'
     <nav class="nav_bar">
       <RouterLink to="/Libros">Libros</RouterLink>
       <RouterLink to="/aguacates">Aguacates</RouterLink>
+      <RouterLink to="/favorits">Favorit</RouterLink>
     </nav>
   </header>
   <RouterView />

@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
-export const useFavoritsSore = ('favorits', () => {
+export const useFavoritsStore = defineStore('favorits', () => {
     const esFavorit = ref([]);
     
     //Esta es l funcion para marcarlo como favorito
