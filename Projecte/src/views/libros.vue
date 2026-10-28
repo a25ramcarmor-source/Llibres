@@ -5,7 +5,28 @@ import { getLlibres } from '../../comunicacio/llibres'
 const dadesLlibres = ref([])
 import { onBeforeMount } from 'vue'
 import filtre from '@/components/compFiltre.vue'
+import { useLibreStore } from '@/stores/favorits'
+import { reactive, computed } from 'vue'
+
+
+const store = useLibreStore();
 const carregant = ref(true);
+const genereSeleccionat = ref('');
+const nomesFavorits = ref(false);
+
+const llibresFiltrats = computed(() => {
+  return dadesLlibres.value.filter(llibre => {
+
+    const coincideixGenere =
+      genereSeleccionat.value === '' ||
+      llibre.genero === genereSeleccionat.value
+
+    const coincideixFavorit =
+      !nomesFavorits.value || store.getFavorit(llibre)
+
+    return coincideixGenere && coincideixFavorit
+  })
+})
 
 //Aixo es un moment determinat
 // onBeforeMount(() => {
@@ -19,7 +40,8 @@ const carregant = ref(true);
 
 onBeforeMount(async () => {
   try {
-    dadesLlibres.value = await getLlibres()
+    await store.carregarLlibres();
+    dadesLlibres.value = store.llibres;
   } catch (error) {
     console.error('Error carregant els Llibres', error)
   } finally {
@@ -33,7 +55,12 @@ onBeforeMount(async () => {
 <template>
   <h1 v-if="!carregant">Llibres</h1>
 
-  <filtre>Filtrar</filtre>
+ <filtre
+  @evtCanviGenere="genereSeleccionat = $event"
+  @evtCanviFav="nomesFavorits = $event"
+>
+  Filtrar
+</filtre>
 
   <div id="load" v-if="carregant">
     <img v-if="carregant" id="load"
@@ -45,7 +72,7 @@ onBeforeMount(async () => {
   </p>
 
   <div v-else class="listas">
-    <libros v-for="actual in dadesLlibres" :key="actual.id" :llibres="actual" />
+    <libros v-for="actual in llibresFiltrats" :key="actual.id" :llibres="actual" />
   </div>
 
 </template>

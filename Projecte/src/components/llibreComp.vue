@@ -1,9 +1,9 @@
 
 <script setup>
-import { useFavoritsStore } from '@/stores/favorits';
+import { useLibreStore } from '@/stores/favorits';
 
 const props = defineProps(['llibres'])
-const store = useFavoritsStore()
+const store = useLibreStore()
 
 const comprar = () => {
     alert('¡Libro añadido al carrito!')

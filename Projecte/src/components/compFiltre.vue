@@ -15,10 +15,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 const emit = defineEmits(['evtCanviGenere','evtCanviFav']);
 let genere = ref('');
 let filtreFav = ref(false);
+
+watch(genere,(nougenere)=>{
+    emit('evtCanviGenere',nougenere);
+})
+watch(filtreFav,(favorit)=>{
+    emit('evtCanviFav',favorit);
+})
 
 </script>
 

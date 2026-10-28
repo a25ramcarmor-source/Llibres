@@ -1,26 +1,40 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { reactive, computed } from 'vue'
+import { getLlibres } from '../../comunicacio/llibres'
 
-export const useFavoritsStore = defineStore('favorits', () => {
-    const esFavorit = ref([]);
-    
+export const useLibreStore = defineStore('favorits', () => {
+    let llibres = ref([]);
+    let favorits = ref([]);
+    async function carregarLlibres() {
+        llibres.value = await getLlibres();
+
+    }
+
+    carregarLlibres();
+
+    const llibresFavorits = computed (()=>{
+        return llibres.value.filter(llibre => 
+            favorits.value.some(f => f.id === llibre.id)
+        )
+    });
     //Esta es l funcion para marcarlo como favorito
     function toggleFavorit(llibre) {
 
-        const index = esFavorit.value.findIndex(p => p.id === llibre.id
+        const index = favorits.value.findIndex(p => p.id === llibre.id
         );
         if(index === -1){
-            esFavorit.value.push(llibre);
+            favorits.value.push(llibre);
         }else{
-            esFavorit.value.splice(index,1);
+            favorits.value.splice(index,1);
         }
     }
 
     function getFavorit(llibre){
-        return esFavorit.value.some(l => l.id === llibre.id);
+        return favorits.value.some(l => l.id === llibre.id);
     }
 
 
 
-    return {esFavorit,toggleFavorit,getFavorit}
+    return {favorits,llibres,llibresFavorits,carregarLlibres,toggleFavorit,getFavorit}
 });
